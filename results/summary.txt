@@ -1,0 +1,47 @@
+Mars Mission Simulator - Mission Summary
+
+transfer type = Starship-like Earth to Mars transfer
+integration method = RK4
+gravity sources = Sun, Earth, Mars
+orbit model = 3D elliptical Kepler orbits
+burn model = patched-conic Earth departure with mass loss
+Mars arrival model = atmospheric entry interface
+
+initial spacecraft mass = 1.42e+06 kg
+final spacecraft mass = 514434 kg
+fuel used = 905566 kg
+initial available delta-v = 6949.17 m/s
+
+Mars phase = 2.79733 rad
+launch delta-v factor = 1.03633
+launch normal factor = -0.0751667
+
+launch burn model = patched-conic departure
+launch burn duration = simplified as impulsive escape burn
+Mars capture burn duration = disabled
+Mars entry altitude target = 125 km
+Mars entry radius target = 3514.5 km from Mars center
+Mars entry speed target = 7.5 km/s
+
+launch delta-v estimate = 3721.97 m/s
+launch delta-v applied = 3721.97 m/s
+Mars propulsive capture burn = disabled
+Mars approach correction delta-v = 61.7339 m/s
+total propulsive delta-v applied = 3783.71 m/s
+
+approximate Hohmann transfer time = 258.857 days
+closest Mars approach = 3389.5 km from Mars center
+entry radius error = -125 km
+time of closest Mars approach = 177.627 days
+Mars relative speed at closest approach = 34.4588 m/s
+Mars relative speed error = -7.46554 km/s
+maximum Sun distance = 2.28891e+08 km
+
+entry interface time = 177.627 days
+entry interface distance = 3514.15 km from Mars center
+Mars encounter status = reached atmospheric entry interface
+
+Starship-style interpretation:
+The simulation does not model a propulsive Mars orbit insertion.
+Instead, the trajectory is evaluated as a direct Mars atmospheric arrival.
+At Mars, Starship-like deceleration would mainly be aerodynamic, with engines used later for the final landing phase.

@@ -1,0 +1,2 @@
+p.mars_phase = 1.09399;
+p.launch_dv_factor = 1.11; // on v1 (not elyptical orbits)
