@@ -67,35 +67,27 @@ The trajectory is not manually drawn. It is calculated from the current position
 
 The spacecraft state is described by its position and velocity:
 
-$$
-\vec{r} = (x,y,z)
-$$
 
-$$
-\vec{v} = (v_x,v_y,v_z)
-$$
+$$\vec{r} = (x,y,z)$$
+
+
+$$\vec{v} = (v_x,v_y,v_z)$$
+
 
 The equations of motion are:
 
-$$
-\frac{d\vec{r}}{dt} = \vec{v}
-$$
 
-$$
-\frac{d\vec{v}}{dt} = \vec{a}
-$$
+$$\frac{d\vec{r}}{dt} = \vec{v}$$
+
+
+$$\frac{d\vec{v}}{dt} = \vec{a}$$
+
 
 The total acceleration is calculated as:
 
-$$
-\vec{a}
-=
-\vec{a}_{grav}
-+
-\vec{a}_{drag}
-+
-\vec{a}_{burn}
-$$
+
+$$\vec{a} = \vec{a}_{grav} + \vec{a}_{drag} + \vec{a}_{burn}$$
+
 
 Before atmospheric entry, the main force is gravity.
 After atmospheric entry, drag becomes active.
@@ -109,21 +101,21 @@ Earth and Mars are modeled using elliptical Keplerian orbits.
 
 The mean anomaly is:
 
-$$
-M(t) = M_0 + nt
-$$
+
+$$M(t) = M_0 + nt$$
+
 
 with:
 
-$$
-n = \sqrt{\frac{GM_{Sun}}{a^3}}
-$$
+
+$$n = \sqrt{\frac{GM_{Sun}}{a^3}}$$
+
 
 Kepler's equation is solved iteratively:
 
-$$
-M = E - e\sin E
-$$
+
+$$M = E - e\sin E$$
+
 
 where:
 
@@ -132,13 +124,12 @@ where:
 
 The coordinates in the orbital plane are:
 
-$$
-x = a(\cos E - e)
-$$
 
-$$
-y = a\sqrt{1-e^2}\sin E
-$$
+$$x = a(\cos E - e)$$
+
+
+$$y = a\sqrt{1-e^2}\sin E$$
+
 
 Then the position is rotated into 3D space using orbital inclination and orientation angles. This gives more realistic planet motion than simple circular orbits, while still keeping the code readable.
 
@@ -148,25 +139,15 @@ Then the position is rotated into 3D space using orbital inclination and orienta
 
 The gravitational acceleration from one body is:
 
-$$
-\vec{a}_i
-=
-GM_i
-\frac{\vec{r}_i - \vec{r}}
-{|\vec{r}_i - \vec{r}|^3}
-$$
+
+$$\vec{a}_i = GM_i \frac{\vec{r}_i - \vec{r}} {|\vec{r}_i - \vec{r}|^3}$$
+
 
 The total gravitational acceleration is:
 
-$$
-\vec{a}_{grav}
-=
-\vec{a}_{Sun}
-+
-\vec{a}_{Earth}
-+
-\vec{a}_{Mars}
-$$
+
+$$\vec{a}_{grav} = \vec{a}_{Sun} + \vec{a}_{Earth} + \vec{a}_{Mars}$$
+
 
 This means that the spacecraft is affected by the gravity of all three bodies.
 Before the atmosphere starts slowing the spacecraft down, Mars gravity pulls it inward and its Mars-relative speed increases.
@@ -177,30 +158,21 @@ Before the atmosphere starts slowing the spacecraft down, Mars gravity pulls it 
 
 The equations of motion are solved with the fourth-order Runge-Kutta method.
 
-$$
-k_1 = f(t, y)
-$$
 
-$$
-k_2 = f\left(t + \frac{\Delta t}{2}, y + \frac{\Delta t}{2}k_1\right)
-$$
+$$k_1 = f(t, y)$$
 
-$$
-k_3 = f\left(t + \frac{\Delta t}{2}, y + \frac{\Delta t}{2}k_2\right)
-$$
 
-$$
-k_4 = f(t + \Delta t, y + \Delta t k_3)
-$$
+$$k_2 = f\left(t + \frac{\Delta t}{2}, y + \frac{\Delta t}{2}k_1\right)$$
 
-$$
-y_{n+1}
-=
-y_n
-+
-\frac{\Delta t}{6}
-(k_1 + 2k_2 + 2k_3 + k_4)
-$$
+
+$$k_3 = f\left(t + \frac{\Delta t}{2}, y + \frac{\Delta t}{2}k_2\right)$$
+
+
+$$k_4 = f(t + \Delta t, y + \Delta t k_3)$$
+
+
+$$y_{n+1} = y_n + \frac{\Delta t}{6} (k_1 + 2k_2 + 2k_3 + k_4)$$
+
 
 RK4 was used because the mission lasts many months, so the numerical method has to be more stable than simple Euler integration.
 
@@ -212,79 +184,48 @@ The first departure estimate is based on a Hohmann-like transfer from Earth's or
 
 The semi-major axis of the transfer ellipse is:
 
-$$
-a_t = \frac{r_E + r_M}{2}
-$$
+
+$$a_t = \frac{r_E + r_M}{2}$$
+
 
 The approximate transfer time is:
 
-$$
-t_H
-=
-\pi
-\sqrt{
-\frac{a_t^3}{GM_{Sun}}
-}
-$$
+
+$$t_H = \pi \sqrt{ \frac{a_t^3}{GM_{Sun}} }$$
+
 
 Earth's orbital speed is:
 
-$$
-v_E
-=
-\sqrt{
-\frac{GM_{Sun}}{r_E}
-}
-$$
+
+$$v_E = \sqrt{ \frac{GM_{Sun}}{r_E} }$$
+
 
 The transfer speed at Earth's orbit is:
 
-$$
-v_t
-=
-\sqrt{
-GM_{Sun}
-\left(
-\frac{2}{r_E}
--
-\frac{1}{a_t}
-\right)
-}
-$$
+
+$$v_t = \sqrt{ GM_{Sun} \left( \frac{2}{r_E} - \frac{1}{a_t} \right) }$$
+
 
 The hyperbolic excess velocity is estimated as:
 
-$$
-v_{\infty} = v_t - v_E
-$$
+
+$$v_{\infty} = v_t - v_E$$
+
 
 The departure burn from parking orbit is approximated by:
 
-$$
-\Delta v
-=
-\sqrt{v_{\infty}^2 + v_{esc}^2}
--
-v_{parking}
-$$
+
+$$\Delta v = \sqrt{v_{\infty}^2 + v_{esc}^2} - v_{parking}$$
+
 
 where:
 
-$$
-v_{parking}
-=
-\sqrt{
-\frac{GM_E}{r_{parking}}
-}
-$$
 
-$$
-v_{esc}
-=
-\sqrt{
-\frac{2GM_E}{r_{parking}}
-}
-$$
+$$v_{parking} = \sqrt{ \frac{GM_E}{r_{parking}} }$$
+
+
+$$v_{esc} = \sqrt{ \frac{2GM_E}{r_{parking}} }$$
+
 
 This gives a reasonable first estimate for the Earth departure burn.
 
@@ -294,24 +235,15 @@ This gives a reasonable first estimate for the Earth departure burn.
 
 The burns use the Tsiolkovsky rocket equation:
 
-$$
-\Delta v
-=
-v_e
-\ln
-\left(
-\frac{m_0}{m_f}
-\right)
-$$
+
+$$\Delta v = v_e \ln \left( \frac{m_0}{m_f} \right)$$
+
 
 Solving for the final mass:
 
-$$
-m_f
-=
-m_0
-e^{-\Delta v/v_e}
-$$
+
+$$m_f = m_0 e^{-\Delta v/v_e}$$
+
 
 where:
 
@@ -338,63 +270,36 @@ A small correction burn is applied during the Mars approach.
 
 The Mars-relative position and velocity are:
 
-$$
-\vec{r}_{rel}
-=
-\vec{r}_{ship}
--
-\vec{r}_{Mars}
-$$
 
-$$
-\vec{v}_{rel}
-=
-\vec{v}_{ship}
--
-\vec{v}_{Mars}
-$$
+$$\vec{r}_{rel} = \vec{r}_{ship} - \vec{r}_{Mars}$$
+
+
+$$\vec{v}_{rel} = \vec{v}_{ship} - \vec{v}_{Mars}$$
+
 
 The approximate time to closest approach is:
 
-$$
-t_c
-=
--
-\frac{
-\vec{r}_{rel}
-\cdot
-\vec{v}_{rel}
-}
-{
-|\vec{v}_{rel}|^2
-}
-$$
+
+$$t_c = - \frac{ \vec{r}_{rel} \cdot \vec{v}_{rel} } { |\vec{v}_{rel}|^2 }$$
+
 
 The predicted closest position is:
 
-$$
-\vec{r}_{closest}
-=
-\vec{r}_{rel}
-+
-\vec{v}_{rel}t_c
-$$
+
+$$\vec{r}_{closest} = \vec{r}_{rel} + \vec{v}_{rel}t_c$$
+
 
 The target is the atmospheric entry radius:
 
-$$
-r_{entry}
-=
-R_{Mars}
-+
-h_{entry}
-$$
+
+$$r_{entry} = R_{Mars} + h_{entry}$$
+
 
 with:
 
-$$
-h_{entry} = 125 \text{ km}
-$$
+
+$$h_{entry} = 125 \text{ km}$$
+
 
 The correction burn shifts the predicted closest approach toward this radius.
 
@@ -406,12 +311,9 @@ The correction burn shifts the predicted closest approach toward this radius.
 
 The atmosphere is modeled with a simple exponential density profile:
 
-$$
-\rho(h)
-=
-\rho_0
-e^{-h/H}
-$$
+
+$$\rho(h) = \rho_0 e^{-h/H}$$
+
 
 where:
 
@@ -421,9 +323,9 @@ where:
 
 The atmosphere starts affecting the spacecraft below the entry altitude:
 
-$$
-h \leq 125 \text{ km}
-$$
+
+$$h \leq 125 \text{ km}$$
+
 
 Before this point, the spacecraft mostly accelerates under gravity.
 After this point, drag becomes strong and the velocity starts dropping quickly.
@@ -434,15 +336,9 @@ After this point, drag becomes strong and the velocity starts dropping quickly.
 
 The drag force is:
 
-$$
-F_D
-=
-\frac{1}{2}
-\rho
-C_D
-A
-v^2
-$$
+
+$$F_D = \frac{1}{2} \rho C_D A v^2$$
+
 
 where:
 
@@ -453,32 +349,17 @@ where:
 
 The drag acceleration is:
 
-$$
-\vec{a}_{drag}
-=
--
-\frac{F_D}{m}
-\frac{
-\vec{v}_{rel}
-}
-{
-|\vec{v}_{rel}|
-}
-$$
+
+$$\vec{a}_{drag} = - \frac{F_D}{m} \frac{ \vec{v}_{rel} } { |\vec{v}_{rel}| }$$
+
 
 The minus sign means that drag acts opposite to the spacecraft motion.
 
 The Mars-relative speed is recalculated every timestep:
 
-$$
-v_{rel}
-=
-|
-\vec{v}_{ship}
--
-\vec{v}_{Mars}
-|
-$$
+
+$$v_{rel} = | \vec{v}_{ship} - \vec{v}_{Mars} |$$
+
 
 This is why the reentry velocity plot is calculated live from the actual simulated motion.
 
@@ -491,59 +372,33 @@ This is why the reentry velocity plot is calculated live from the actual simulat
 Near the surface, a simplified terminal landing burn is applied.
 The burn direction is opposite to the Mars-relative velocity:
 
-$$
-\vec{a}_{burn}
-=
--
-a_{burn}
-\frac{
-\vec{v}_{rel}
-}
-{
-|\vec{v}_{rel}|
-}
-$$
+
+$$\vec{a}_{burn} = - a_{burn} \frac{ \vec{v}_{rel} } { |\vec{v}_{rel}| }$$
+
 
 The target speed decreases with altitude:
 
-$$
-v_{target}
-=
-5
-+
-0.015h
-$$
+
+$$v_{target} = 5 + 0.015h$$
+
 
 If the current speed is larger than the target speed:
 
-$$
-v_{remove}
-=
-v
--
-v_{target}
-$$
+
+$$v_{remove} = v - v_{target}$$
+
 
 The required braking acceleration is estimated from:
 
-$$
-a_{req}
-=
-\frac{
-v_{remove}^2
-}
-{
-2h
-}
-$$
+
+$$a_{req} = \frac{ v_{remove}^2 } { 2h }$$
+
 
 The final burn acceleration is limited:
 
-$$
-a_{burn}
-=
-\min(a_{req}, a_{max})
-$$
+
+$$a_{burn} = \min(a_{req}, a_{max})$$
+
 
 This is not a complete landing guidance system, but it gives a clear final deceleration phase in the simulation.
 
@@ -579,17 +434,15 @@ Near the surface, the landing burn reduces the Mars-relative speed to zero.
 
 Surface contact is detected when:
 
-$$
-h \leq 0
-$$
+
+$$h \leq 0$$
+
 
 If the Mars-relative speed is below the touchdown limit, the mission is marked as landed:
 
-$$
-v_{rel}
-\leq
-v_{limit}
-$$
+
+$$v_{rel} \leq v_{limit}$$
+
 
 Otherwise, it is marked as impact.
 
